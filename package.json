@@ -1,6 +1,6 @@
 {
   "name": "@campaign-buddy/nest-toolkit",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A collection of common nest modules that I use for web apps",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,8 @@
   "homepage": "https://github.com/josephdangerstewart/nest-toolkit#readme",
   "files": [
 	"modules/*",
-	"auth.ts"
+	"auth.ts",
+	"users.ts"
   ],
   "peerDependencies": {
     "@nestjs/common": "^7.6.1",
