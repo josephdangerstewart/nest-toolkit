@@ -1,5 +1,5 @@
 export {
-	getDatabaseModule,
+	DatabaseModule,
 	DatabaseConnection,
 	DatabaseService,
 } from './modules/database';

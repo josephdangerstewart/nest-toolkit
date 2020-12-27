@@ -1,4 +1,4 @@
 export {
-	getGoogleAuthModule,
+	AuthModule,
 	Authenticate,
 } from './modules/auth';

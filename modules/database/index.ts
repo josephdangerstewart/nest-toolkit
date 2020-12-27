@@ -1,3 +1,3 @@
 export { DatabaseService } from './Database.service';
 export { DatabaseConnection } from './DatabaseConnection';
-export { getDatabaseModule } from './getDatabaseModule';
+export { DatabaseModule } from './Database.module';
