@@ -1,6 +1,6 @@
 {
   "name": "@campaign-buddy/nest-toolkit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A collection of common nest modules that I use for web apps",
   "main": "index.js",
   "scripts": {
@@ -25,14 +25,14 @@
   ],
   "peerDependencies": {
     "@nestjs/common": "^7.6.1",
-    "@nestjs/passport": "^7.1.5"
+	"@nestjs/passport": "^7.1.5",
+	"passport": "^0.4.1",
+	"passport-google-oauth": "^2.0.0"
   },
   "devDependencies": {
     "@nestjs/common": "^7.6.1",
-    "@nestjs/passport": "^7.1.5"
-  },
-  "dependencies": {
+	"@nestjs/passport": "^7.1.5",
 	"passport": "^0.4.1",
-    "passport-google-oauth": "^2.0.0"
+	"passport-google-oauth": "^2.0.0"
   }
 }
