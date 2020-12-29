@@ -1,8 +1,8 @@
 {
   "name": "@campaign-buddy/nest-toolkit",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "A collection of common nest modules that I use for web apps",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
