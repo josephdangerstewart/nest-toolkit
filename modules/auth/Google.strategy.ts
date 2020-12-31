@@ -7,7 +7,7 @@ import { GOOGLE_STRATEGY_OPTIONS, USER_SERVICE } from './provideConstants';
 export interface GoogleStrategyOptions {
 	clientID: string;
 	clientSecret: string;
-	callbackUrl: string;
+	baseUrl: string;
 }
 
 @Injectable()
@@ -19,7 +19,7 @@ export class GoogleStrategy extends PassportStrategy(OAuth2Strategy) {
 		super({
 			clientID: options.clientID,
 			clientSecret: options.clientSecret,
-			callbackURL: options.callbackUrl,
+			callbackURL: `${options.baseUrl}/auth/google/redirect`,
 			scope: ['email', 'profile'],
 		});
 	}
