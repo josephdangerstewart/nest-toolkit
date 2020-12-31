@@ -5,7 +5,7 @@ import { AuthController, AuthControllerOptions } from './Auth.controller';
 import { IUserService } from '../users';
 import { SessionSerializer } from './SessionSerializer';
 import { AuthGuard } from './Auth.guard';
-import { USER_SERVICE, GOOGLE_STRATEGY_OPTIONS } from './provideConstants';
+import { USER_SERVICE, GOOGLE_STRATEGY_OPTIONS, AUTH_CONTROLLER_OPTIONS } from './provideConstants';
 
 interface GoogleAuthModuleOptions extends GoogleStrategyOptions, AuthControllerOptions {
 	userService: Type<IUserService>;
@@ -29,9 +29,14 @@ export class AuthModule {
 			useValue: options,
 		};
 
+		const authControllerOptionsProvider: Provider<AuthControllerOptions> = {
+			provide: AUTH_CONTROLLER_OPTIONS,
+			useValue: options,
+		}
+
 		return {
 			module: AuthModule,
-			providers: [userServiceProvider, googleStrategyOptionsProvider]
+			providers: [userServiceProvider, googleStrategyOptionsProvider, authControllerOptionsProvider]
 		}
 	}
 }
