@@ -1,3 +1,15 @@
-export * as auth from './auth';
-export * as database from './database';
-export * as users from './users';
+export {
+	AuthModule,
+	Authenticate,
+} from './modules/auth';
+
+export {
+	IUserService,
+	IUser,
+} from './modules/users';
+
+export {
+	DatabaseModule,
+	DatabaseConnection,
+	DatabaseService,
+} from './modules/database';

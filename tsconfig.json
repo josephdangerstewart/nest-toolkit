@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"module": "commonjs",
+		"declaration": true,
+		"outDir": "./dist",
+		"strict": false,
+		"skipLibCheck": true,
+		"allowJs": true,
+		"experimentalDecorators": true
+	},
+	"include": [
+		"index.ts"
+	],
+	"exclude": [
+		"node_modules",
+		"**/__tests__/*"
+	]
+}
