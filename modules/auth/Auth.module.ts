@@ -1,13 +1,13 @@
 import { Module, Type, Provider, DynamicModule } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { GoogleStrategy, GoogleStrategyOptions } from './Google.strategy';
-import { AuthController } from './Auth.controller';
+import { AuthController, AuthControllerOptions } from './Auth.controller';
 import { IUserService } from '../users';
 import { SessionSerializer } from './SessionSerializer';
 import { AuthGuard } from './Auth.guard';
 import { USER_SERVICE, GOOGLE_STRATEGY_OPTIONS } from './provideConstants';
 
-interface GoogleAuthModuleOptions extends GoogleStrategyOptions {
+interface GoogleAuthModuleOptions extends GoogleStrategyOptions, AuthControllerOptions {
 	userService: Type<IUserService>;
 }
 

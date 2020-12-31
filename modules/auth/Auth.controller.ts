@@ -1,8 +1,16 @@
-import { Controller, Get, UseGuards, Redirect } from '@nestjs/common';
+import { Controller, Get, UseGuards, Inject, Res, Redirect } from '@nestjs/common';
 import { GoogleLoginGuard } from './GoogleLogin.guard';
+import { AUTH_CONTROLLER_OPTIONS } from './provideConstants';
+
+export interface AuthControllerOptions {
+	redirectUrl: string;
+}
 
 @Controller()
 export class AuthController {
+	@Inject(AUTH_CONTROLLER_OPTIONS)
+	private options: AuthControllerOptions;
+
 	@Get('/auth/google')
 	@UseGuards(GoogleLoginGuard)
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -10,7 +18,11 @@ export class AuthController {
 
 	@Get('/auth/google/redirect')
 	@UseGuards(GoogleLoginGuard)
-	@Redirect('/hello')
+	@Redirect('/')
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	googleAuthRedirect() { }
+	googleAuthRedirect() {
+		if (this.options.redirectUrl) {
+			return { url: this.options.redirectUrl };
+		}
+	}
 }
