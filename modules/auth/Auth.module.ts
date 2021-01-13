@@ -1,4 +1,4 @@
-import { Module, Type, Provider, DynamicModule } from '@nestjs/common';
+import { Module, Type, Provider, DynamicModule, Global } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { GoogleStrategy, GoogleStrategyOptions } from './Google.strategy';
 import { AuthController, AuthControllerOptions } from './Auth.controller';
@@ -11,6 +11,7 @@ interface GoogleAuthModuleOptions extends GoogleStrategyOptions, AuthControllerO
 	userService: Type<IUserService>;
 }
 
+@Global()
 @Module({
 	providers: [GoogleStrategy, AuthGuard],
 	imports: [PassportModule.register({ session: true }), SessionSerializer],
@@ -36,7 +37,8 @@ export class AuthModule {
 
 		return {
 			module: AuthModule,
-			providers: [userServiceProvider, googleStrategyOptionsProvider, authControllerOptionsProvider]
+			providers: [userServiceProvider, googleStrategyOptionsProvider, authControllerOptionsProvider],
+			exports: [userServiceProvider],
 		}
 	}
 }

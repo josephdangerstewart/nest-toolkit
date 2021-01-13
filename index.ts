@@ -13,3 +13,8 @@ export {
 	DatabaseConnection,
 	DatabaseService,
 } from './modules/database';
+
+export {
+	getMockFetch,
+	getAuthenticatedTestApp,
+} from './modules/testing';
