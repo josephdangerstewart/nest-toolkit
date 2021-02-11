@@ -7,6 +7,7 @@ import { DatabaseConnection } from './DatabaseConnection';
 export class DatabasePoolService {
 	private pool: Pool;
 	private openConnections: { [connectionId: number]: DatabaseConnection };
+	private connectionsToClose: DatabaseConnection[];
 
 	constructor() {
 		this.pool = mysql.createPool({
@@ -28,20 +29,26 @@ export class DatabasePoolService {
 		return connectionId;
 	}
 
-	public getConnection(connectionId: number): DatabaseConnection {
-		if (!connectionId || !this.openConnections[connectionId]) {
-			throw new Error('Request was not initialized with a connection from the pool');
+	public async getConnection(connectionId: number): Promise<DatabaseConnection> {
+		if (connectionId && this.openConnections[connectionId]) {
+			return this.openConnections[connectionId];
 		}
 
-		return this.openConnections[connectionId];
+		const connection = await this.openConnectionFromPool();
+		this.connectionsToClose.push(connection);
+		return connection;
 	}
 
-	public releaseConnection(connectionId: number): void {
-		if (!connectionId || !this.openConnections[connectionId]) {
-			throw new Error()
+	public releaseConnections(connectionId?: number): void {
+		for (const connection of this.connectionsToClose) {
+			connection.dispose();
 		}
+		this.connectionsToClose = [];
 
-		this.openConnections[connectionId].dispose();
+		if (connectionId && this.openConnections[connectionId]) {
+			this.openConnections[connectionId].dispose();
+			this.openConnections[connectionId] = null;
+		}
 	}
 
 	private openConnectionFromPool(): Promise<DatabaseConnection> {

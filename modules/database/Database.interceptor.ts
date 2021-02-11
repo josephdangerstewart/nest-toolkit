@@ -23,7 +23,7 @@ export class DatabaseInterceptor<T> implements NestInterceptor<T, T> {
 		return next
 			.handle()
 			.pipe(
-				tap(() => this.databasePool.releaseConnection(databaseConnectionId))
+				tap(() => this.databasePool.releaseConnections(databaseConnectionId))
 			);
 	}
 }

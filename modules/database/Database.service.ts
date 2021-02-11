@@ -19,13 +19,8 @@ export class DatabaseService {
 	@Inject(DATABASE_POOL)
 	private poolService: DatabasePoolService;
 
-	getConnection(): DatabaseConnection {
+	public async getConnection(): Promise<DatabaseConnection> {
 		const { databaseConnectionId } = this.request?.__nestToolkit ?? {};
-
-		if (!databaseConnectionId) {
-			throw new Error('Request was not given a database connection');
-		}
-
-		return this.poolService.getConnection(databaseConnectionId as number);
+		return await this.poolService.getConnection(databaseConnectionId as number);
 	}
 }

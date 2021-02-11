@@ -17,6 +17,8 @@ import { v4 as uuid } from 'uuid';
 import { IUser, IUserService } from '../users';
 import { AUTHED_USER } from './provideConstants';
 import { USER_SERVICE } from '../auth/provideConstants';
+import { DATABASE_POOL } from '../database/provideConstants';
+import { DatabasePoolService } from '../database/DatabasePool.service';
 
 type Importable = Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference<any>;
 
@@ -61,7 +63,7 @@ class MockAuthModule implements NestModule {
 export async function getAuthenticatedTestApp(appModule: Importable, user: Partial<IUser> = {}): Promise<INestApplication> {
 	let mockUser: UserReference = {
 		user: {
-			email: uuid().replace(/\-/g, '') + '@gmail.com',
+			email: uuid().replace(/\-/g, '') + '@example.com',
 			name: uuid(),
 			...user,
 		},
@@ -76,6 +78,9 @@ export async function getAuthenticatedTestApp(appModule: Importable, user: Parti
 
 	const userService = app.get(USER_SERVICE) as IUserService;
 	const createdUser = await userService.getOrCreateUser(mockUser.user.email, mockUser.user.name);
+
+	const databasePoolService = app.get(DATABASE_POOL) as DatabasePoolService;
+	databasePoolService.releaseConnections();
 
 	mockUser.user = {
 		...mockUser.user,
