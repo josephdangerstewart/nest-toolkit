@@ -2,6 +2,7 @@ import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { DatabaseConnection } from './DatabaseConnection';
 import { DatabasePoolService } from './DatabasePool.service';
+import { DATABASE_POOL } from './provideConstants';
 
 export interface DatabaseServiceOptions {
 	user: string,
@@ -15,7 +16,7 @@ export class DatabaseService {
 	@Inject(REQUEST)
 	private request: any;
 
-	@Inject()
+	@Inject(DATABASE_POOL)
 	private poolService: DatabasePoolService;
 
 	getConnection(): DatabaseConnection {

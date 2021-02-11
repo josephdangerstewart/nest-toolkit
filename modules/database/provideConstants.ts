@@ -1,1 +1,2 @@
 export const DATABASE_OPTIONS = 'DATABASE_OPTIONS';
+export const DATABASE_POOL = 'DATABASE_POOL';

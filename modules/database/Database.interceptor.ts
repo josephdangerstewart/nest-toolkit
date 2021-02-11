@@ -2,10 +2,11 @@ import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Inject } fr
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { DatabasePoolService } from './DatabasePool.service';
+import { DATABASE_POOL } from './provideConstants';
 
 @Injectable()
 export class DatabaseInterceptor<T> implements NestInterceptor<T, T> {
-	@Inject()
+	@Inject(DATABASE_POOL)
 	private databasePool: DatabasePoolService;
 
 	async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<T>> {
