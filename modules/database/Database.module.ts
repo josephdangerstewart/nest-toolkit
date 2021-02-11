@@ -1,10 +1,11 @@
 import { Module, Global, DynamicModule } from '@nestjs/common';
 import { DatabaseService, DatabaseServiceOptions } from './Database.service';
+import { DatabasePoolService } from './DatabasePool.service';
 import { DATABASE_OPTIONS } from './provideConstants';
 
 @Global()
 @Module({
-	providers: [DatabaseService],
+	providers: [DatabaseService, DatabasePoolService],
 	exports: [DatabaseService]
 })
 export class DatabaseModule {
