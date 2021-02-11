@@ -15,7 +15,7 @@ import { DATABASE_OPTIONS } from './provideConstants';
 			useClass: DatabaseInterceptor,
 		}
 	],
-	exports: [DatabaseService],
+	exports: [DatabaseService, DatabasePoolService],
 })
 export class DatabaseModule {
 	static register(options: DatabaseServiceOptions): DynamicModule {

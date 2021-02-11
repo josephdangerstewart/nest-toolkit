@@ -1,7 +1,5 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import * as mysql from 'mysql';
-import { Pool } from 'mysql';
 import { DatabaseConnection } from './DatabaseConnection';
 import { DatabasePoolService } from './DatabasePool.service';
 
