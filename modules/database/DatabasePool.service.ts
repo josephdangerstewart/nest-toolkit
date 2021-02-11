@@ -20,6 +20,7 @@ export class DatabasePoolService {
 		});
 
 		this.openConnections = {};
+		this.connectionsToClose = [];
 	}
 
 	public async openConnectionForRequest(): Promise<number> {
@@ -80,6 +81,23 @@ export class DatabasePoolService {
 	}
 
 	async onModuleDestroy() {
+		if (this.connectionsToClose.length !== 0) {
+			console.error('Not all connections were released before app shutdown');
+
+			for (const connection of this.connectionsToClose) {
+				connection.dispose();
+			}
+		}
+
+		const requestScopedConnections = Object.values(this.openConnections).filter(Boolean);
+		if (requestScopedConnections.length !== 0) {
+			console.error('Not all request scoped connections were released before app shutdown');
+			
+			for (const connection of requestScopedConnections) {
+				connection.dispose();
+			}
+		}
+
 		this.pool.end();
 	} 
 }
