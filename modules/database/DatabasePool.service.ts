@@ -46,7 +46,9 @@ export class DatabasePoolService {
 		}
 		this.connectionsToClose = [];
 
+		console.log(`Trying to release connection ${connectionId}`);
 		if (connectionId && this.openConnections[connectionId]) {
+			console.log(`Releasing connection ${connectionId}`);
 			this.openConnections[connectionId].dispose();
 			this.openConnections[connectionId] = null;
 		}
@@ -87,6 +89,7 @@ export class DatabasePoolService {
 			for (const connection of this.connectionsToClose) {
 				connection.dispose();
 			}
+			this.connectionsToClose = [];
 		}
 
 		const requestScopedConnections = Object.values(this.openConnections).filter(Boolean);
@@ -96,6 +99,7 @@ export class DatabasePoolService {
 			for (const connection of requestScopedConnections) {
 				connection.dispose();
 			}
+			this.openConnections = {};
 		}
 
 		this.pool.end();
