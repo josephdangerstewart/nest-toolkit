@@ -11,7 +11,6 @@ export class DatabaseInterceptor<T> implements NestInterceptor<T, T> {
 
 	async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<T>> {
 		const databaseConnectionId = await this.databasePool.openConnectionForRequest();
-		console.log(`Opening connection ${databaseConnectionId}`);
 
 		const request = context
 			.switchToHttp()
@@ -24,10 +23,7 @@ export class DatabaseInterceptor<T> implements NestInterceptor<T, T> {
 		return next
 			.handle()
 			.pipe(
-				tap(() => {
-					console.log(`Releasing connection ${databaseConnectionId}`);
-					this.databasePool.releaseConnections(databaseConnectionId);
-				})
+				tap(() => this.databasePool.releaseConnections(databaseConnectionId))
 			);
 	}
 }

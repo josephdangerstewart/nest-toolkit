@@ -25,19 +25,17 @@ export class DatabasePoolService {
 
 	public async openConnectionForRequest(): Promise<number> {
 		const connectionId = this.getNextConnectionId();
-		console.log(`Opening connection ${connectionId}`);
 		const connection = await this.openConnectionFromPool();
 		this.openConnections[connectionId] = connection;
 		return connectionId;
 	}
 
 	public async getConnection(connectionId: number): Promise<DatabaseConnection> {
-		if (connectionId && this.openConnections[connectionId]) {
+		if ((connectionId || connectionId === 0) && this.openConnections[connectionId]) {
 			return this.openConnections[connectionId];
 		}
 
 		const connection = await this.openConnectionFromPool();
-		console.log('Opening one off connection');
 		this.connectionsToClose.push(connection);
 		return connection;
 	}
@@ -48,9 +46,7 @@ export class DatabasePoolService {
 		}
 		this.connectionsToClose = [];
 
-		console.log(`Trying to release connection ${connectionId}`);
 		if (connectionId && this.openConnections[connectionId]) {
-			console.log(`Actually releasing connection ${connectionId}`);
 			this.openConnections[connectionId].dispose();
 			this.openConnections[connectionId] = null;
 		}
