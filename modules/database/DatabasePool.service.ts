@@ -48,7 +48,7 @@ export class DatabasePoolService {
 
 		console.log(`Trying to release connection ${connectionId}`);
 		if (connectionId && this.openConnections[connectionId]) {
-			console.log(`Releasing connection ${connectionId}`);
+			console.log(`Actually releasing connection ${connectionId}`);
 			this.openConnections[connectionId].dispose();
 			this.openConnections[connectionId] = null;
 		}
