@@ -91,7 +91,7 @@ export class DatabasePoolService {
 
 		const requestScopedConnections = Object.values(this.openConnections).filter(Boolean);
 		if (requestScopedConnections.length !== 0) {
-			console.error(`Not all request scoped connections were released before app shutdown: ${requestScopedConnections.length} open connections\n\n[${Object.keys(this.openConnections).join('\t\n')}]`);
+			console.error(`Not all request scoped connections were released before app shutdown: ${requestScopedConnections.length} open connections\n\n[\n${Object.keys(this.openConnections).map(x => `\t${x}`).join('\n')}\n]`);
 			
 			for (const connection of requestScopedConnections) {
 				connection.dispose();
