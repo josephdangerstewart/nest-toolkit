@@ -25,6 +25,7 @@ export class DatabasePoolService {
 
 	public async openConnectionForRequest(): Promise<number> {
 		const connectionId = this.getNextConnectionId();
+		console.log(`Opening connection ${connectionId}`);
 		const connection = await this.openConnectionFromPool();
 		this.openConnections[connectionId] = connection;
 		return connectionId;
@@ -36,6 +37,7 @@ export class DatabasePoolService {
 		}
 
 		const connection = await this.openConnectionFromPool();
+		console.log('Opening one off connection');
 		this.connectionsToClose.push(connection);
 		return connection;
 	}
