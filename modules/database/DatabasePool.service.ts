@@ -46,7 +46,7 @@ export class DatabasePoolService {
 		}
 		this.connectionsToClose = [];
 
-		if (connectionId && this.openConnections[connectionId]) {
+		if ((connectionId || connectionId === 0) && this.openConnections[connectionId]) {
 			this.openConnections[connectionId].dispose();
 			this.openConnections[connectionId] = null;
 		}
