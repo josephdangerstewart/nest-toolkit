@@ -18,3 +18,10 @@ export {
 	getMockFetch,
 	getAuthenticatedTestApp,
 } from './modules/testing';
+
+export {
+	LogLevel,
+	LoggingModule,
+	LoggingService,
+} from './modules/logging';
+export { ILoggingService } from './modules/logging';
