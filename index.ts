@@ -23,5 +23,6 @@ export {
 	LogLevel,
 	LoggingModule,
 	LoggingService,
+	ConsoleLoggingService,
 } from './modules/logging';
 export { ILoggingService } from './modules/logging';
