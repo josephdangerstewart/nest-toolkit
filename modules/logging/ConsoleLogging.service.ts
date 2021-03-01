@@ -12,5 +12,7 @@ export class ConsoleLoggingService implements ILoggingService {
 		} else {
 			console.log(message);
 		}
+
+		return Promise.resolve();
 	}
 }
