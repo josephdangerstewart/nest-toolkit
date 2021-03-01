@@ -4,6 +4,7 @@ import { LOGGING_OPTIONS } from './provideConstants';
 
 @Global()
 @Module({
+	providers: [LoggingService],
 	exports: [LoggingService],
 })
 export class LoggingModule {
