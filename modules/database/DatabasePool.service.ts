@@ -1,10 +1,14 @@
 import { Pool } from 'mysql';
 import * as mysql from 'mysql';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { DatabaseConnection } from './DatabaseConnection';
+import { LoggingService, LogLevel } from '../logging';
 
 @Injectable()
 export class DatabasePoolService {
+	@Inject()
+	private logger: LoggingService;
+
 	private pool: Pool;
 	private openConnections: { [connectionId: number]: DatabaseConnection };
 	private connectionsToClose: DatabaseConnection[];
@@ -26,6 +30,11 @@ export class DatabasePoolService {
 	public async openConnectionForRequest(): Promise<number> {
 		const connectionId = this.getNextConnectionId();
 		const connection = await this.openConnectionFromPool();
+
+		if (this.logger) {
+			await this.logger.log(`Opening connection ${connectionId}`, LogLevel.Verbose);
+		}
+
 		this.openConnections[connectionId] = connection;
 		return connectionId;
 	}
@@ -33,6 +42,10 @@ export class DatabasePoolService {
 	public async getConnection(connectionId: number): Promise<DatabaseConnection> {
 		if ((connectionId || connectionId === 0) && this.openConnections[connectionId]) {
 			return this.openConnections[connectionId];
+		}
+
+		if (this.logger) {
+			await this.logger.log(`Getting connection for ${connectionId}`, LogLevel.Verbose);
 		}
 
 		const connection = await this.openConnectionFromPool();
@@ -81,8 +94,14 @@ export class DatabasePoolService {
 	}
 
 	async onModuleDestroy() {
+		if (this.logger) {
+			await this.logger.log('Destroying database module', LogLevel.Verbose);
+		}
+
 		if (this.connectionsToClose.length !== 0) {
-			console.error(`Not all connections were released before app shutdown: ${this.connectionsToClose.length} open connections`);
+			if (this.logger) {
+				await this.logger.log(`Not all connections were released before app shutdown: ${this.connectionsToClose.length} open connections`, LogLevel.Error);
+			}
 
 			for (const connection of this.connectionsToClose) {
 				connection.dispose();
@@ -92,11 +111,16 @@ export class DatabasePoolService {
 
 		const requestScopedConnections = Object.values(this.openConnections).filter(Boolean);
 		if (requestScopedConnections.length !== 0) {
-			console.error(`Not all request scoped connections were released before app shutdown: ${requestScopedConnections.length} open connections\n\n[\n${Object
-				.keys(this.openConnections)
-				.filter(x => this.openConnections[x])
-				.map(x => `\t${x}`)
-				.join('\n')}\n]`);
+
+			if (this.logger) {
+				const message = `Not all request scoped connections were released before app shutdown: ${requestScopedConnections.length} open connections\n\n[\n${Object
+					.keys(this.openConnections)
+					.filter(x => this.openConnections[x])
+					.map(x => `\t${x}`)
+					.join('\n')}\n]`;
+
+				await this.logger.log(message, LogLevel.Error);
+			}
 			
 			for (const connection of requestScopedConnections) {
 				connection.dispose();
