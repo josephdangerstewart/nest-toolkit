@@ -25,8 +25,7 @@ import { LoggingModule } from '../logging';
 			provide: DATABASE_POOL,
 			useClass: DatabasePoolService,
 		},
-	],
-	imports: [LoggingModule]
+	]
 })
 export class DatabaseModule {
 	static register(options: DatabaseServiceOptions): DynamicModule {
@@ -37,7 +36,8 @@ export class DatabaseModule {
 					provide: DATABASE_OPTIONS,
 					useValue: options,
 				}
-			]
+			],
+			imports: options.loggingModule ? [options.loggingModule] : undefined,
 		}
 	}
 }

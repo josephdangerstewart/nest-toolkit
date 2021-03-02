@@ -1,14 +1,15 @@
-import { Inject, Injectable, Scope } from '@nestjs/common';
+import { DynamicModule, Inject, Injectable, Scope, Type } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { DatabaseConnection } from './DatabaseConnection';
 import { DatabasePoolService } from './DatabasePool.service';
 import { DATABASE_POOL } from './provideConstants';
 
 export interface DatabaseServiceOptions {
-	user: string,
-	password: string,
-	host: string,
-	database: string
+	user: string;
+	password: string;
+	host: string;
+	database: string;
+	loggingModule?: Type<any> | DynamicModule;
 }
 
 @Injectable({ scope: Scope.REQUEST })

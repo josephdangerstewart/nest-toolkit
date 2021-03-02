@@ -15,7 +15,6 @@ export interface LoggingServiceOptions {
 export class LoggingService implements ILoggingService {
 	constructor(
 		private ref: ModuleRef,
-		@Optional()
 		@Inject(LOGGING_OPTIONS)
 		private options: LoggingServiceOptions) {}
 
