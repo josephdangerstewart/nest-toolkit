@@ -4,7 +4,7 @@ import { DatabaseService, DatabaseServiceOptions } from './Database.service';
 import { DatabasePoolService } from './DatabasePool.service';
 import { DatabaseInterceptor } from './Database.interceptor';
 import { DATABASE_OPTIONS, DATABASE_POOL } from './provideConstants';
-import { LoggingService } from '../logging';
+import { LoggingModule } from '../logging';
 
 @Global()
 @Module({
@@ -26,7 +26,7 @@ import { LoggingService } from '../logging';
 			useClass: DatabasePoolService,
 		},
 	],
-	imports: [LoggingService]
+	imports: [LoggingModule]
 })
 export class DatabaseModule {
 	static register(options: DatabaseServiceOptions): DynamicModule {
