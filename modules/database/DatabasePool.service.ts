@@ -1,11 +1,12 @@
 import { Pool } from 'mysql';
 import * as mysql from 'mysql';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Optional } from '@nestjs/common';
 import { DatabaseConnection } from './DatabaseConnection';
 import { LoggingService, LogLevel } from '../logging';
 
 @Injectable()
 export class DatabasePoolService {
+	@Optional()
 	@Inject()
 	private logger: LoggingService;
 
