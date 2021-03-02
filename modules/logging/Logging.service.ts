@@ -13,10 +13,10 @@ export interface LoggingServiceOptions {
 
 @Injectable()
 export class LoggingService implements ILoggingService {
-	@Inject(LOGGING_OPTIONS)
-	private options: LoggingServiceOptions;
-
-	constructor(private ref: ModuleRef) {}
+	constructor(
+		private ref: ModuleRef,
+		@Inject(LOGGING_OPTIONS)
+		private options: LoggingServiceOptions) {}
 
 	async log(message: string, level: LogLevel = LogLevel.Info): Promise<void> {
 		const loggers = this.getLoggersForLevel(level) ?? [];
