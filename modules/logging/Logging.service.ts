@@ -1,4 +1,4 @@
-import { Inject, Injectable, Type } from '@nestjs/common';
+import { Inject, Injectable, Optional, Type } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { ILoggingService } from './ILoggingService';
 import { LogLevel } from './LogLevel';
@@ -15,6 +15,7 @@ export interface LoggingServiceOptions {
 export class LoggingService implements ILoggingService {
 	constructor(
 		private ref: ModuleRef,
+		@Optional()
 		@Inject(LOGGING_OPTIONS)
 		private options: LoggingServiceOptions) {}
 
@@ -30,13 +31,13 @@ export class LoggingService implements ILoggingService {
 	private getLoggersForLevel(level: LogLevel): Type<ILoggingService>[] {
 		switch (level) {
 			case LogLevel.Verbose:
-				return this.options.verbose;
+				return this.options?.verbose;
 			case LogLevel.Info:
-				return this.options.info;
+				return this.options?.info;
 			case LogLevel.Warning:
-				return this.options.warning;
+				return this.options?.warning;
 			case LogLevel.Error:
-				return this.options.error;
+				return this.options?.error;
 		}
 
 		return [];
