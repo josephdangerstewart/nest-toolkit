@@ -18,10 +18,14 @@ export class DatabaseInterceptor<T> implements NestInterceptor<T, T> {
 
 		request.__nestToolkit = {
 			databaseConnectionId,
-		}
+		};
 
-		return next.handle().pipe(
-			tap(() => this.databasePool.releaseConnections(databaseConnectionId)),
-		);
+		const release = () => this.databasePool.releaseConnections(databaseConnectionId);
+
+		return next
+			.handle()
+			.pipe(
+				tap(release, release)
+			);
 	}
 }
