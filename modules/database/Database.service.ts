@@ -1,5 +1,5 @@
 import { DynamicModule, Inject, Injectable, Scope, Type } from '@nestjs/common';
-import { ModuleRef, REQUEST } from '@nestjs/core';
+import { REQUEST } from '@nestjs/core';
 import { DatabaseConnection } from './DatabaseConnection';
 import { DatabasePoolService } from './DatabasePool.service';
 import { DATABASE_POOL } from './provideConstants';
