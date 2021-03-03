@@ -4,7 +4,6 @@ import { DatabaseService, DatabaseServiceOptions } from './Database.service';
 import { DatabasePoolService } from './DatabasePool.service';
 import { DatabaseInterceptor } from './Database.interceptor';
 import { DATABASE_OPTIONS, DATABASE_POOL } from './provideConstants';
-import { LoggingModule } from '../logging';
 
 @Global()
 @Module({
@@ -37,7 +36,6 @@ export class DatabaseModule {
 					useValue: options,
 				}
 			],
-			imports: options.loggingModule ? [options.loggingModule] : undefined,
 		}
 	}
 }

@@ -1,4 +1,4 @@
-import { Inject, Injectable, Optional, Type } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Type } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { ILoggingService } from './ILoggingService';
 import { LogLevel } from './LogLevel';
@@ -13,16 +13,17 @@ export interface LoggingServiceOptions {
 
 @Injectable()
 export class LoggingService implements ILoggingService {
-	constructor(
-		private ref: ModuleRef,
-		@Inject(LOGGING_OPTIONS)
-		private options: LoggingServiceOptions) {}
+	@Inject(forwardRef(() => ModuleRef))
+	private moduleRef: ModuleRef;
+
+	@Inject(LOGGING_OPTIONS)
+	private options: LoggingServiceOptions;
 
 	async log(message: string, level: LogLevel = LogLevel.Info): Promise<void> {
 		const loggers = this.getLoggersForLevel(level) ?? [];
 
 		for (const loggerType of loggers) {
-			const logger = await this.ref.create(loggerType);
+			const logger = await this.moduleRef.resolve(loggerType);
 			await logger.log(message, level);
 		}
 	}

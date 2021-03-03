@@ -14,10 +14,18 @@ export class LoggingModule {
 			useValue: options,
 		};
 
+		const allLoggers = [
+			...(options.verbose ?? []),
+			...(options.info ?? []),
+			...(options.warning ?? []),
+			...(options.error ?? []),
+		];
+
 		return {
 			module: LoggingModule,
 			providers: [
 				provider,
+				...new Set(allLoggers),
 			]
 		}
 	}
