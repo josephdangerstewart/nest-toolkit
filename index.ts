@@ -26,3 +26,5 @@ export {
 	ConsoleLoggingService,
 } from './modules/logging';
 export { ILoggingService } from './modules/logging';
+
+export * from './modules/validation';
