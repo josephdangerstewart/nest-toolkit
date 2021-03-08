@@ -11,7 +11,7 @@ export interface GoogleStrategyOptions {
 }
 
 @Injectable()
-export class GoogleStrategy extends PassportStrategy(OAuth2Strategy) {
+export class GoogleStrategy extends PassportStrategy(OAuth2Strategy, 'google') {
 	@Inject(USER_SERVICE)
 	private userService!: IUserService;
 	
