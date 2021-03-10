@@ -3,6 +3,7 @@ import * as mysql from 'mysql';
 import { Injectable } from '@nestjs/common';
 import { DatabaseConnection } from './DatabaseConnection';
 import { LogLevel } from '../logging';
+import { RequestContext } from '../request-context';
 
 @Injectable()
 export class DatabasePoolService {
@@ -25,11 +26,11 @@ export class DatabasePoolService {
 	}
 
 	public async openConnectionForRequest(): Promise<number> {
-		const connectionId = this.getNextConnectionId();
+		const { requestId } = RequestContext.current;
 		const connection = await this.openConnectionFromPool();
 
-		this.openConnections[connectionId] = connection;
-		return connectionId;
+		this.openConnections[requestId] = connection;
+		return requestId;
 	}
 
 	public async getConnection(connectionId: number): Promise<DatabaseConnection> {
@@ -64,22 +65,6 @@ export class DatabasePoolService {
 				return resolve(dbConnection);
 			});
 		})
-	}
-
-	private getNextConnectionId(): number {
-		const existingKeys = Object.keys(this.openConnections).map(parseInt).sort();
-
-		if (existingKeys.length === 0) {
-			return 0;
-		}
-
-		for (let i = 0; i < existingKeys.length; i++) {
-			if (existingKeys[i + 1] !== existingKeys[i] + 1) {
-				return existingKeys[i] + 1;
-			}
-		}
-
-		return Math.max(...existingKeys) + 1;
 	}
 
 	async onModuleDestroy() {
