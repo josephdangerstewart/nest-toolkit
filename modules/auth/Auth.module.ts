@@ -22,7 +22,7 @@ export class AuthModule {
 	static register(options: GoogleAuthModuleOptions): DynamicModule {
 		const userServiceProvider: Provider<IUserService> = {
 			provide: USER_SERVICE,
-			useClass: options.userService,
+			useExisting: options.userService,
 		};
 	
 		const googleStrategyOptionsProvider: Provider<GoogleStrategyOptions> = {
