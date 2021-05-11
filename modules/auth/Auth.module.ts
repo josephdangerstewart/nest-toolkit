@@ -1,4 +1,4 @@
-import { Module, Type, Provider, DynamicModule, Global } from '@nestjs/common';
+import { Module, Type, Provider, DynamicModule, Global, ModuleMetadata } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { GoogleStrategy, GoogleStrategyOptions } from './Google.strategy';
 import { AuthController, AuthControllerOptions } from './Auth.controller';
@@ -9,6 +9,7 @@ import { USER_SERVICE, GOOGLE_STRATEGY_OPTIONS, AUTH_CONTROLLER_OPTIONS } from '
 
 interface GoogleAuthModuleOptions extends GoogleStrategyOptions, AuthControllerOptions {
 	userService: Type<IUserService>;
+	imports?: ModuleMetadata['imports'];
 }
 
 @Global()
@@ -39,6 +40,7 @@ export class AuthModule {
 			module: AuthModule,
 			providers: [userServiceProvider, googleStrategyOptionsProvider, authControllerOptionsProvider],
 			exports: [userServiceProvider],
+			imports: options.imports,
 		}
 	}
 }
