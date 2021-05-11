@@ -1,6 +1,6 @@
 {
   "name": "@campaign-buddy/nest-toolkit",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "description": "A collection of common nest modules that I use for web apps",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
