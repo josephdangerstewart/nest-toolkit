@@ -28,6 +28,6 @@ export class GoogleStrategy extends PassportStrategy(OAuth2Strategy, 'google') {
 		const { displayName } = profile;
 		const email = profile.emails?.[0]?.value;
 		const user = await this.userService.getOrCreateUser(displayName, email);
-		done(null, user);
+		return user;
 	}
 }

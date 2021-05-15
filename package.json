@@ -1,6 +1,6 @@
 {
   "name": "@campaign-buddy/nest-toolkit",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "description": "A collection of common nest modules that I use for web apps",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -30,19 +30,19 @@
     "@nestjs/common": "^7.6.1",
     "@nestjs/core": "^7.6.13",
     "@nestjs/passport": "^7.1.5",
+    "@nestjs/swagger": "^4.8.0",
     "passport": "^0.4.1",
     "tsc": "^1.20150623.0",
-	"typescript": "^4.1.3",
-	"@nestjs/swagger": "^4.8.0"
+    "typescript": "^4.1.3"
   },
   "devDependencies": {
     "@nestjs/common": "^7.6.1",
     "@nestjs/core": "^7.6.12",
     "@nestjs/passport": "^7.1.5",
+    "@nestjs/swagger": "^4.8.0",
     "passport": "^0.4.1",
     "tsc": "^1.20150623.0",
-	"typescript": "^4.1.3",
-	"@nestjs/swagger": "^4.8.0"
+    "typescript": "^4.1.3"
   },
   "dependencies": {
     "@nestjs/testing": "^7.6.5",
@@ -50,10 +50,13 @@
     "@types/mysql": "^2.15.17",
     "@types/node": "^14.14.16",
     "@types/passport-google-oauth": "^1.0.41",
+    "@types/passport-http-bearer": "^1.0.36",
     "@types/uuid": "^8.3.0",
     "asyncctx": "^2.0.15",
+    "googleapis": "^73.0.0",
     "mysql": "^2.18.1",
     "passport-google-oauth": "^2.0.0",
+    "passport-http-bearer": "^1.0.1",
     "rxjs": "^6.6.3",
     "supertest-fetch": "^1.4.3",
     "uuid": "^8.3.2"
