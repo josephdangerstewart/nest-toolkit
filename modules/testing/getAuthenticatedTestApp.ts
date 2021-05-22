@@ -60,7 +60,7 @@ class MockAuthModule implements NestModule {
 	}
 }
 
-export async function getAuthenticatedTestApp(appModule: Importable, user: Partial<IUser> = {}): Promise<INestApplication> {
+export async function getAuthenticatedTestApp<TUser extends IUser = IUser>(appModule: Importable, user: Partial<TUser> = {}): Promise<INestApplication> {
 	let mockUser: UserReference = {
 		user: {
 			email: uuid().replace(/\-/g, '') + '@example.com',
