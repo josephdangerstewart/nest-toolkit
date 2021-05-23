@@ -22,26 +22,26 @@ import { DatabasePoolService } from '../database/DatabasePool.service';
 
 type Importable = Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference<any>;
 
-interface UserReference {
+interface UserReference<TUser extends IUser = IUser> {
 	user: IUser;
 }
 
 @Injectable()
 class MockAuthMiddleware implements NestMiddleware {
 	@Inject(AUTHED_USER)
-	private authedUser: UserReference;
+	private getAuthedUser: () => UserReference;
 
 	use(req: any, res: any, next: () => void) {
-		req.user = this.authedUser.user;
+		req.user = this.getAuthedUser().user;
 		next();
 	}
 }
 
 @Module({})
 class MockAuthModule implements NestModule {
-	static register(user: UserReference, appModule: Importable): DynamicModule {
-		const userProvider: Provider<UserReference> = {
-			useValue: user,
+	static register(getUser: () => UserReference, appModule: Importable): DynamicModule {
+		const userProvider: Provider<() => UserReference> = {
+			useValue: getUser,
 			provide: AUTHED_USER,
 		};
 
@@ -60,16 +60,24 @@ class MockAuthModule implements NestModule {
 	}
 }
 
-export async function getAuthenticatedTestApp<TUser extends IUser = IUser>(appModule: Importable, user: Partial<TUser> = {}): Promise<INestApplication> {
-	let mockUser: UserReference = {
+export async function getAuthenticatedTestApp<TUser extends IUser = IUser>(appModule: Importable, userOrGetUser: Partial<TUser> | (() => Partial<TUser>) = {}): Promise<INestApplication> {
+	let userRef: UserReference<TUser> = {
 		user: {
 			email: uuid().replace(/\-/g, '') + '@example.com',
 			name: uuid(),
-			...user,
-		},
+		}
 	};
 
-	const TestModule = MockAuthModule.register(mockUser, appModule);
+	let getUser: () => UserReference<TUser> = () => {
+		return {
+			user: {
+				...userRef.user,
+				...(typeof userOrGetUser === 'function' ? userOrGetUser() : userOrGetUser),
+			}
+		}
+	};
+
+	const TestModule = MockAuthModule.register(getUser, appModule);
 	const module = await Test.createTestingModule({
 		imports: [TestModule],
 	}).compile();
@@ -77,15 +85,15 @@ export async function getAuthenticatedTestApp<TUser extends IUser = IUser>(appMo
 	const app = module.createNestApplication();
 
 	const userService = app.get(USER_SERVICE) as IUserService;
-	const createdUser = await userService.getOrCreateUser(mockUser.user.email, mockUser.user.name);
+	const createdUser = await userService.getOrCreateUser(userRef.user.email, userRef.user.name);
 
 	try {
 		const databasePoolService = app.get(DATABASE_POOL) as DatabasePoolService;
 		databasePoolService.releaseConnections();
 	} catch {}
 
-	mockUser.user = {
-		...mockUser.user,
+	userRef.user = {
+		...userRef.user,
 		...createdUser,
 	};
 
