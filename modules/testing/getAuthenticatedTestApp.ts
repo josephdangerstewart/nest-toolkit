@@ -79,8 +79,10 @@ export async function getAuthenticatedTestApp<TUser extends IUser = IUser>(appMo
 	const userService = app.get(USER_SERVICE) as IUserService;
 	const createdUser = await userService.getOrCreateUser(mockUser.user.email, mockUser.user.name);
 
-	const databasePoolService = app.get(DATABASE_POOL) as DatabasePoolService;
-	databasePoolService.releaseConnections();
+	try {
+		const databasePoolService = app.get(DATABASE_POOL) as DatabasePoolService;
+		databasePoolService.releaseConnections();
+	} catch {}
 
 	mockUser.user = {
 		...mockUser.user,
