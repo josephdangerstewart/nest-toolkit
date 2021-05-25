@@ -77,12 +77,18 @@ export async function getAuthenticatedTestApp<TUser extends IUser = IUser>(appMo
 		}
 	};
 
-	const TestModule = MockAuthModule.register(getUser, appModule);
-	const module = await Test.createTestingModule({
-		imports: [TestModule],
-	}).compile();
-
-	const app = module.createNestApplication();
+	let app: INestApplication;
+	try {
+		const TestModule = MockAuthModule.register(getUser, appModule);
+		const module = await Test.createTestingModule({
+			imports: [TestModule],
+		}).compile();
+	
+		app = module.createNestApplication();
+	} catch (err) {
+		console.error(`encountered a fatal error, terminating process\n\n${JSON.stringify(err)}`);
+		process.kill(1);
+	}
 
 	const userService = app.get(USER_SERVICE) as IUserService;
 	const createdUser = await userService.getOrCreateUser(userRef.user.email, userRef.user.name);
@@ -97,6 +103,10 @@ export async function getAuthenticatedTestApp<TUser extends IUser = IUser>(appMo
 		...createdUser,
 	};
 
-	await app.init();
+	try {
+		await app.init();
+	} catch (err) {
+		console.error(`encountered a fatal error, terminating process\n\n${JSON.stringify(err)}`);
+	}
 	return app;
 }
