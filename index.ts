@@ -17,6 +17,7 @@ export {
 export {
 	getMockFetch,
 	getAuthenticatedTestApp,
+	getTestServer,
 } from './modules/testing';
 
 export {
